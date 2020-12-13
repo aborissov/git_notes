@@ -1,0 +1,62 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage[section]{placeins}
+
+\newcommand{\warning}[1]{\color{red}#1\color{black}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\ital}[1]{\textit{#1}}
+
+\title{A (very) informal, non-comprehensive, and haphazard guide to version control with Git \\ \tiny{Hopefully it doesn't contain any actual errors...}}
+\author{Alexei Borissov}
+
+\begin{document}
+
+\maketitle
+
+\section{What is \code{git}?}
+\ital{Git} is a version control program typically available on Linux operating systems (and possibly others). It can be used to track evolution of a codebase (or other projects) over time. A \ital{git repository} consists of a series of \ital{commits} over one or multiple \ital{branches}. A commit consists of changes to files within the repository. One can move to different snapshots of the code by applying or rewinding different commits. Several versions of the code can also be tracked within the different branches. Changes between the different versions can be combined via \ital{merges} (for instance). Git repositories consist of at least a local repository located in the directory being worked on, as well as remote versions hosted, for example on github, gitlab, etc. 
+
+\section{How do we use git?}
+For completeness, when creating a new git repository, in a new directory use \code{git init}\footnote{Any commandline commands are written in \code{this font}. Any variables to pass to these commands are written as \code{<\ital{x}>}, with a suitable descriptor of what this variable should be.}. This initialises a new repository in the directory, allowing tracking of changes in the repository. 
+
+To obtain a copy of an existing repository to work on, use \code{git clone <\ital{url}>}. In this case either a url pointing to the site hosting the repository, or a link via ssh, if you have ssh keys uploaded to the hosting server. 
+
+To add changes you have made to existing files or to add new files to the repository use \code{git add <\ital{file list}>} (or \code{git add .} to add everything in the directory), followed by \code{git commit}. \code{git add} adds the specified files to the \ital{index} (a list of files to be committed), while \code{git commit} writes the changes to the repository. When writing a commit, git asks you to provide a short message describing your changes. By default (at least for me) when using \code{git commit} a text editor similar to vim will open where the message can be written (type i, followed by the message, followed by :wq). It is possible to change to other text editors, or use \code{git commit -m "\ital{message}"}. If there are any files that you want to exclude write the filenames (possibly using wildcards) into .gitignore. Generally it is encouraged to have only source code and minimal necessary configuration files in repositories. Any figures and data should not be committed.
+
+Once we have a few commits in the history we can view the history via \code{git log}. Associated with each commit is a \ital{commit-sha} which is a unique identifier (consisting of a long string of letters and numbers) of each commit. We can navigate to previous versions of the code by using \code{git checkout <\ital{commit-sha}>}. This will reset all the changes to the state of the repository to the state that it was in at the time of the commit. It is useful to close any open files in the repository in order to avoid confusion with regard to changes that would be "unmade" while checking out a previous commit. 
+
+By default when initialising or cloning repositories only a master branch is provided, to change to another branch use \code{git checkout <\ital{branch name}>}. If we want to make some experimental changes use \code{git checkout -b <\ital{new branch name}>}. Any commits to this branch will not be applied to the master branch, and it will be possible to recover the initial state of the code by using \code{git checkout master}. If we want to incorporate the changes from an experimental branch into the master (or any other branch), checkout the branch of interest, then use \code{git merge}. Git will try to incorporate any of your changes into the master branch automatically, but in case there are any issues it will instruct you to resolve them and add them to the index to be committed at the end of the merge.
+
+\section{Typical workflow}
+\begin{itemize}
+  \item Clone a repository with \code{git clone}
+  \item Create a work branch using \code{git checkout -b}
+  \item Do work, make some changes, add the changes using \code{git add} and commit with \code{git commit}
+  \item Some useful commands: 
+  \begin{itemize}
+   \item \code{git status} tells you the current state of your index (i.e. files to be committed), including new and untracked files
+   \item \code{git stash} allows you to store any changes since the last commit into a stash, which will allow you to checkout other branches or commits. \code{git stash apply} reapplies these changes
+   \item \code{git rebase} allows you to update your branch to the latest version of the one yours is based on. Be careful with this as this changes the history of your repository and could screw up your work. If in doubt, create a new branch, rebase that one, and merge it in. 
+   \item \code{git rm} removes files from the repository and your local repo. Simply doing \code{rm} works only locally. 
+   \item \code{git diff <\ital{commit1}> <\ital{commit2}> -- <\ital{files}>} shows the differences in the specified files, between the specified commits. 
+  \end{itemize}
+  \item Finally when you've done your commits you can push them to the remote repository to have a backup with \code{git push origin <\ital{branch name}>}
+  \item When you're sure your work is correct and has passed all the tests that any good repository should have you can merge your work into master with \code{git merge}
+
+\end{itemize}
+
+\section{Other resources}
+This is only a very basic overview of how to use git. There are many more things you can do with it that you can explore in the myriad of online resources, some of which are listed below.
+\begin{itemize}
+  \item A tutorial: \url{https://www.atlassian.com/git/tutorials}
+  \item Docs: \url{https://git-scm.com/docs/gittutorial}
+  \item To learn about any command: \code{man git-<\ital{command}>} (e.g. \code{man git-add})
+  \item If anything is broken: \url{google.co.uk} or email ab325
+\end{itemize}
+
+\end{document}
