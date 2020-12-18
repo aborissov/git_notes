@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage[a4paper]{geometry}
 \usepackage{graphicx}
+\usepackage{glossaries}
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{subcaption}
@@ -14,12 +15,14 @@
 \title{A (very) informal, non-comprehensive, and haphazard guide to version control with Git \\ \tiny{Hopefully it doesn't contain any actual errors...}}
 \author{Alexei Borissov}
 
+\makeglossaries
+
 \begin{document}
 
 \maketitle
 
 \section{What is \code{git}?}
-\ital{Git} is a version control program typically available on Linux operating systems (and possibly others). It can be used to track evolution of a codebase (or other projects) over time. A \ital{git repository} consists of a series of \ital{commits} over one or multiple \ital{branches}. A commit consists of changes to files within the repository. One can move to different snapshots of the code by applying or rewinding different commits. Several versions of the code can also be tracked within the different branches. Changes between the different versions can be combined via \ital{merges} (for instance). Git repositories consist of at least a local repository located in the directory being worked on, as well as remote versions hosted, for example on github, gitlab, etc. 
+\ital{Git} is a version control program typically available on Linux operating systems (and possibly others). It can be used to track evolution of a codebase (or other projects) over time by tracking changes between files (rather than keeping individual versions of the files themselves). A \ital{git repository} consists of a series of \ital{commits} over one or multiple \ital{branches}. A commit consists of changes to files within the repository. One can move to different snapshots of the code by applying or rewinding different commits. Several versions of the code can also be tracked within the different branches. Changes between the different versions can be combined via \ital{merges} (for instance). Git repositories consist of at least a local repository located in the directory being worked on, as well as remote versions hosted, for example on github, gitlab, etc. 
 
 \section{How do we use git?}
 For completeness, when creating a new git repository, in a new directory use \code{git init}\footnote{Any commandline commands are written in \code{this font}. Any variables to pass to these commands are written as \code{<\ital{x}>}, with a suitable descriptor of what this variable should be.}. This initialises a new repository in the directory, allowing tracking of changes in the repository. 
@@ -56,7 +59,45 @@ This is only a very basic overview of how to use git. There are many more things
   \item A tutorial: \url{https://www.atlassian.com/git/tutorials}
   \item Docs: \url{https://git-scm.com/docs/gittutorial}
   \item To learn about any command: \code{man git-<\ital{command}>} (e.g. \code{man git-add})
-  \item If anything is broken: \url{google.co.uk} or email ab325
 \end{itemize}
+
+% Glossary
+\newglossaryentry{git}{
+  name=git,
+  description={A common version control system}
+}
+
+\newglossaryentry{repository}{
+  name=git repository,
+  description={A project being tracked by git, consisting of multiple commits and branches}
+}
+
+\newglossaryentry{commit}{
+  name=commit,
+  description={A collection of changes to files tracked by git}
+}
+
+\newglossaryentry{branch}{
+  name=branch,
+  description={A series of commits that deviate from the main production version of the repository. Branches can be used, for example, for testing or development of new features}
+}
+
+\newglossaryentry{merge}{
+  name=merge,
+  description={The process of incorporating the changes from one branch into another}
+}
+
+\newglossaryentry{index}{
+  name=index,
+  description={a list of files whose changes will be incorporated in the next commit}
+}
+
+\newglossaryentry{commit-sha}{
+  name=commit-sha,
+  description={unique alphanumeric identifier of a commit}
+}
+
+\glsaddall
+\printglossaries
 
 \end{document}
